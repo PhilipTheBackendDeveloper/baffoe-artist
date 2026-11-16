@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 500">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+
+      .cls-3 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-2" width="500" height="500"/>
+    </clipPath>
+  </defs>
+  <!-- Generator: Adobe Illustrator 28.7.1, SVG Export Plug-In . SVG Version: 1.2.0 Build 142)  -->
+  <g>
+    <g id="Layer_1">
+      <rect width="500" height="500"/>
+      <g class="cls-3">
+        <path class="cls-1" d="M291.7,308.4h25v50h-25v-50ZM183.4,333.4v25h25v-50h-25v25ZM350.1,183.4v25h-25v-25h25ZM300.1,233.4h25v-25h-25v25ZM250.1,233.4h-50v25h100v-25h-50ZM175.1,208.4v25h25v-25h-25ZM150.1,183.4v25h25v-25h-25ZM125.1,233.4v50h25v-75h-25v25ZM100.1,308.4v25h-41.7v25h25v25h-25v25h25v100h25v-75h50v-25h-50v-75h16.7v-50h-25v25ZM375.1,233.4v-25h-25v75h25v-50ZM441.7,358.4v-25h-41.7v-50h-25v50h16.7v75h-50v25h50v75h25v-100h25v-25h-25v-25h25Z"/>
+      </g>
+    </g>
+  </g>
+</svg>

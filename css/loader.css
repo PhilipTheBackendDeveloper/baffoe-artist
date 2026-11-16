@@ -1,0 +1,81 @@
+/*! ------------------------------------------------
+ * Project Name: FlyStudio - Creative Studio & Personal Portfolio HTML Template
+ * Project Description: Stand out and express your creativity with FlyStudio - a bold and bright HTML template for creatives, agencies and freelancers. Impress your website visitors with stunning visuals and unique layout.
+ * Tags: mix_design, resume, portfolio, personal page, cv, template, one page, responsive, html5, css3, creative, clean, agency, studio 
+ * Version: 1.0.0
+ * Build Date: October 2026
+ * Last Update: October 2026
+ * Author: mix_design
+ * Author URI: https://mixdesign.dev */
+/*! File name: loader.css
+ * ------------------------------------------------
+ *
+ * ------------------------------------------------
+ * Table of Contents
+ * ------------------------------------------------
+ *  01. Loader
+ * ------------------------------------------------
+ * Table of Contents End
+ * ------------------------------------------------ */
+/* ------------------------------------------------*/
+/* Loader Start */
+/* ------------------------------------------------*/
+.mxd-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+     -moz-box-orient: vertical;
+     -moz-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  z-index: 101;
+  pointer-events: none;
+}
+
+.mxd-loader__row {
+  -webkit-box-flex: 1;
+     -moz-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.mxd-loader__row.loader-row-1 .mxd-loader__block {
+  -webkit-transform-origin: top;
+     -moz-transform-origin: top;
+      -ms-transform-origin: top;
+          transform-origin: top;
+}
+.mxd-loader__row.loader-row-2 .mxd-loader__block {
+  -webkit-transform-origin: bottom;
+     -moz-transform-origin: bottom;
+      -ms-transform-origin: bottom;
+          transform-origin: bottom;
+}
+
+.mxd-loader__block {
+  -webkit-box-flex: 1;
+     -moz-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  background-color: #7543F2;
+  -webkit-transform: scale(1);
+     -moz-transform: scale(1);
+      -ms-transform: scale(1);
+          transform: scale(1);
+  will-change: transform;
+}
+
+/* ------------------------------------------------*/
+/* Loader End */
+/* ------------------------------------------------*/
