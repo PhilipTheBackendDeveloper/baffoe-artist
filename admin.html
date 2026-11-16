@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" color-scheme="dark">
 <head>
   <meta charset="UTF-8">
   <title>Baffoe Kwabena Studio — Artwork CMS & Admin Portal</title>
@@ -9,13 +9,24 @@
   <link rel="icon" href="img/favicon/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="img/favicon/apple-touch-icon.png">
 
+  <!-- Immediate Theme Initializer to prevent flash -->
+  <script>
+    (function() {
+      try {
+        var t = localStorage.getItem('template.theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('color-scheme', t);
+      } catch(e) {}
+    })();
+  </script>
+
   <!-- Fonts & Icons -->
   <link rel="stylesheet" href="css/plugins.css">
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap");
 
-    :root {
+    :root, [color-scheme="dark"] {
       --bg-dark: #121212;
+      --bg-header: rgba(18, 18, 18, 0.96);
       --bg-card: #1c1b1b;
       --bg-card-hover: #242323;
       --bg-input: #262525;
@@ -23,15 +34,46 @@
       --border-focus: #ccff00;
       --accent-lime: #ccff00;
       --accent-lime-hover: #b8e600;
+      --accent-lime-text: #121212;
       --accent-purple: #9d4edd;
       --text-main: #f3f3f3;
       --text-muted: #9e9d9d;
       --text-dim: #6c6b6b;
       --danger: #ff4d4f;
       --success: #52c41a;
-      --font-heading: 'Oswald', sans-serif;
-      --font-body: 'Inter', sans-serif;
-      --font-mono: 'Source Code Pro', monospace;
+      --shadow-card: 0 15px 35px rgba(0, 0, 0, 0.5);
+      --btn-theme-bg: #262525;
+      --btn-theme-color: #f3f3f3;
+      --badge-bg: rgba(204, 255, 0, 0.12);
+      --badge-border: rgba(204, 255, 0, 0.25);
+      --upload-bg: rgba(255, 255, 255, 0.02);
+      --upload-hover: rgba(204, 255, 0, 0.04);
+    }
+
+    [color-scheme="light"] {
+      --bg-dark: #f4f4f6;
+      --bg-header: rgba(255, 255, 255, 0.96);
+      --bg-card: #ffffff;
+      --bg-card-hover: #f9f9fb;
+      --bg-input: #f0f0f3;
+      --border-color: rgba(0, 0, 0, 0.1);
+      --border-focus: #111111;
+      --accent-lime: #121212;
+      --accent-lime-hover: #2a2a2a;
+      --accent-lime-text: #ffffff;
+      --accent-purple: #7928ca;
+      --text-main: #111111;
+      --text-muted: #555555;
+      --text-dim: #888888;
+      --danger: #e53935;
+      --success: #2e7d32;
+      --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.06);
+      --btn-theme-bg: #eeeeee;
+      --btn-theme-color: #111111;
+      --badge-bg: rgba(0, 0, 0, 0.06);
+      --badge-border: rgba(0, 0, 0, 0.15);
+      --upload-bg: rgba(0, 0, 0, 0.02);
+      --upload-hover: rgba(0, 0, 0, 0.05);
     }
 
     * {
@@ -43,17 +85,18 @@
     body {
       background-color: var(--bg-dark);
       color: var(--text-main);
-      font-family: var(--font-body);
+      font-family: 'Inter', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       -webkit-font-smoothing: antialiased;
       line-height: 1.5;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
     /* Studio Header */
     header.studio-header {
-      background: rgba(18, 18, 18, 0.96);
+      background: var(--bg-header);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-color);
       position: sticky;
@@ -64,6 +107,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
 
     .header-brand {
@@ -75,7 +119,7 @@
     }
 
     .brand-logo {
-      font-family: var(--font-heading);
+      font-family: 'Oswald', sans-serif;
       font-size: 1.4rem;
       font-weight: 700;
       letter-spacing: 0.12em;
@@ -83,22 +127,42 @@
     }
 
     .brand-badge {
-      background: rgba(204, 255, 0, 0.12);
-      color: var(--accent-lime);
-      font-family: var(--font-mono);
+      background: var(--badge-bg);
+      color: var(--text-main);
+      font-family: 'Source Code Pro', monospace;
       font-size: 0.68rem;
       font-weight: 600;
       padding: 0.2rem 0.5rem;
       border-radius: 4px;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      border: 1px solid rgba(204, 255, 0, 0.25);
+      border: 1px solid var(--badge-border);
     }
 
     .header-actions {
       display: flex;
       align-items: center;
       gap: 0.65rem;
+    }
+
+    /* Color Theme Switcher Button */
+    .color-switcher-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--btn-theme-bg);
+      color: var(--btn-theme-color);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.2s ease;
+    }
+    .color-switcher-btn:hover {
+      transform: scale(1.08);
+      border-color: var(--border-focus);
     }
 
     .user-pill {
@@ -127,7 +191,7 @@
       gap: 0.45rem;
       padding: 0.65rem 1.25rem;
       border-radius: 6px;
-      font-family: var(--font-body);
+      font-family: 'Inter', sans-serif;
       font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
@@ -138,7 +202,7 @@
 
     .btn-lime {
       background: var(--accent-lime);
-      color: #121212;
+      color: var(--accent-lime-text);
     }
     .btn-lime:hover {
       background: var(--accent-lime-hover);
@@ -152,7 +216,7 @@
     }
     .btn-outline:hover {
       background: var(--bg-card-hover);
-      border-color: rgba(255, 255, 255, 0.2);
+      border-color: var(--border-focus);
     }
 
     .btn-danger {
@@ -198,28 +262,29 @@
       width: 100%;
       max-width: 440px;
       text-align: center;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+      box-shadow: var(--shadow-card);
       margin: 0 auto;
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
 
     .auth-pill {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      background: rgba(204, 255, 0, 0.12);
-      color: var(--accent-lime);
-      font-family: var(--font-mono);
+      background: var(--badge-bg);
+      color: var(--text-main);
+      font-family: 'Source Code Pro', monospace;
       font-size: 0.72rem;
       font-weight: 600;
       padding: 0.25rem 0.65rem;
       border-radius: 50px;
       margin-bottom: 0.85rem;
       letter-spacing: 0.05em;
-      border: 1px solid rgba(204, 255, 0, 0.25);
+      border: 1px solid var(--badge-border);
     }
 
     .auth-logo {
-      font-family: var(--font-heading);
+      font-family: 'Oswald', sans-serif;
       font-size: 2rem;
       font-weight: 700;
       letter-spacing: 0.12em;
@@ -231,9 +296,9 @@
     .auth-subtitle {
       font-size: 0.82rem;
       font-weight: 600;
-      color: var(--accent-lime);
+      color: var(--text-muted);
       margin-bottom: 1.2rem;
-      font-family: var(--font-mono);
+      font-family: 'Source Code Pro', monospace;
       letter-spacing: 0.08em;
     }
 
@@ -247,7 +312,7 @@
     .auth-alert {
       background: rgba(255, 77, 79, 0.12);
       border: 1px solid rgba(255, 77, 79, 0.3);
-      color: #ff7875;
+      color: var(--danger);
       padding: 0.65rem 0.85rem;
       border-radius: 6px;
       font-size: 0.82rem;
@@ -257,7 +322,6 @@
       line-height: 1.4;
     }
 
-    /* Auth Buttons */
     .auth-buttons {
       display: flex;
       flex-direction: column;
@@ -272,7 +336,7 @@
     }
 
     .passcode-divider {
-      font-family: var(--font-mono);
+      font-family: 'Source Code Pro', monospace;
       font-size: 0.68rem;
       color: var(--text-dim);
       text-transform: uppercase;
@@ -292,7 +356,7 @@
       color: var(--text-main);
       padding: 0.6rem 0.85rem;
       border-radius: 6px;
-      font-family: var(--font-body);
+      font-family: 'Inter', sans-serif;
       font-size: 0.85rem;
       outline: none;
     }
@@ -302,7 +366,7 @@
 
     /* Whitelist box - Clean and centered */
     .auth-whitelist {
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--upload-bg);
       border: 1px solid var(--border-color);
       border-radius: 10px;
       padding: 0.9rem 1rem;
@@ -311,10 +375,10 @@
     }
 
     .whitelist-title {
-      font-family: var(--font-mono);
+      font-family: 'Source Code Pro', monospace;
       font-size: 0.72rem;
       font-weight: 600;
-      color: var(--accent-lime);
+      color: var(--text-main);
       text-transform: uppercase;
       letter-spacing: 0.06em;
       margin-bottom: 0.6rem;
@@ -331,11 +395,11 @@
     }
 
     .whitelist-chip {
-      background: var(--bg-dark);
+      background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 4px;
       padding: 0.3rem 0.5rem;
-      font-family: var(--font-mono);
+      font-family: 'Source Code Pro', monospace;
       font-size: 0.74rem;
       color: var(--text-muted);
       display: flex;
@@ -346,7 +410,7 @@
     }
 
     .whitelist-chip i {
-      color: var(--accent-lime);
+      color: var(--success);
       font-size: 0.78rem;
     }
 
@@ -368,7 +432,7 @@
     }
 
     .studio-hero-text h1 {
-      font-family: var(--font-heading);
+      font-family: 'Oswald', sans-serif;
       font-size: 2rem;
       font-weight: 700;
       letter-spacing: 0.05em;
@@ -397,21 +461,23 @@
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
+      box-shadow: var(--shadow-card);
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
 
     .stat-card .stat-label {
       font-size: 0.7rem;
-      font-family: var(--font-mono);
+      font-family: 'Source Code Pro', monospace;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
 
     .stat-card .stat-val {
-      font-family: var(--font-heading);
+      font-family: 'Oswald', sans-serif;
       font-size: 1.85rem;
       font-weight: 700;
-      color: var(--accent-lime);
+      color: var(--text-main);
       line-height: 1;
     }
 
@@ -435,10 +501,12 @@
       border: 1px solid var(--border-color);
       border-radius: 14px;
       padding: 1.5rem;
+      box-shadow: var(--shadow-card);
+      transition: background 0.25s ease, border-color 0.25s ease;
     }
 
     .panel-title {
-      font-family: var(--font-heading);
+      font-family: 'Oswald', sans-serif;
       font-size: 1.35rem;
       font-weight: 600;
       text-transform: uppercase;
@@ -470,7 +538,7 @@
 
     label {
       font-size: 0.75rem;
-      font-family: var(--font-mono);
+      font-family: 'Source Code Pro', monospace;
       text-transform: uppercase;
       color: var(--text-muted);
       letter-spacing: 0.05em;
@@ -485,10 +553,10 @@
       color: var(--text-main);
       padding: 0.65rem 0.85rem;
       border-radius: 6px;
-      font-family: var(--font-body);
+      font-family: 'Inter', sans-serif;
       font-size: 0.88rem;
       outline: none;
-      transition: border-color 0.2s ease;
+      transition: border-color 0.2s ease, background 0.2s ease;
       width: 100%;
     }
 
@@ -513,7 +581,7 @@
       border-radius: 8px;
       padding: 1.25rem 0.85rem;
       text-align: center;
-      background: rgba(255, 255, 255, 0.02);
+      background: var(--upload-bg);
       cursor: pointer;
       transition: all 0.2s ease;
       position: relative;
@@ -521,8 +589,8 @@
 
     .upload-zone:hover,
     .upload-zone.dragover {
-      border-color: var(--accent-lime);
-      background: rgba(204, 255, 0, 0.04);
+      border-color: var(--border-focus);
+      background: var(--upload-hover);
     }
 
     .upload-zone input[type="file"] {
@@ -536,7 +604,7 @@
 
     .upload-icon {
       font-size: 2rem;
-      color: var(--accent-lime);
+      color: var(--text-main);
       margin-bottom: 0.35rem;
     }
 
@@ -578,7 +646,7 @@
       background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
       padding: 0.5rem 0.75rem;
       font-size: 0.72rem;
-      font-family: var(--font-mono);
+      font-family: 'Source Code Pro', monospace;
       color: #fff;
       display: flex;
       justify-content: space-between;
@@ -587,7 +655,7 @@
 
     .badge-compressed {
       background: var(--accent-lime);
-      color: #121212;
+      color: var(--accent-lime-text);
       padding: 0.15rem 0.4rem;
       border-radius: 3px;
       font-weight: 700;
@@ -603,7 +671,7 @@
       font-size: 0.82rem;
       color: var(--text-main);
       text-transform: none;
-      font-family: var(--font-body);
+      font-family: 'Inter', sans-serif;
       user-select: none;
     }
 
@@ -621,8 +689,8 @@
     }
 
     .switch-input:checked {
-      background: var(--accent-lime);
-      border-color: var(--accent-lime);
+      background: var(--border-focus);
+      border-color: var(--border-focus);
     }
 
     .switch-input::after {
@@ -639,7 +707,7 @@
 
     .switch-input:checked::after {
       transform: translateX(16px);
-      background: #121212;
+      background: var(--bg-card);
     }
 
     /* Inventory Section */
@@ -657,6 +725,23 @@
       gap: 0.85rem;
     }
 
+    .inventory-search-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      width: 100%;
+    }
+
+    .inventory-search-input {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.55rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
     .inventory-filters {
       display: flex;
       gap: 0.45rem;
@@ -670,16 +755,17 @@
       padding: 0.35rem 0.75rem;
       border-radius: 6px;
       font-size: 0.76rem;
-      font-family: var(--font-mono);
+      font-family: 'Source Code Pro', monospace;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .filter-btn.active,
     .filter-btn:hover {
-      background: rgba(204, 255, 0, 0.1);
-      border-color: var(--accent-lime);
-      color: var(--accent-lime);
+      background: var(--badge-bg);
+      border-color: var(--border-focus);
+      color: var(--text-main);
+      font-weight: 600;
     }
 
     /* Artwork Cards Grid */
@@ -696,11 +782,12 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s ease, border-color 0.2s ease;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.25s ease;
     }
 
     .art-card:hover {
-      border-color: rgba(255, 255, 255, 0.18);
+      border-color: var(--border-focus);
       transform: translateY(-2px);
     }
 
@@ -709,6 +796,7 @@
       height: 200px;
       background: #000;
       overflow: hidden;
+      cursor: pointer;
     }
 
     .art-card-img {
@@ -716,6 +804,10 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.3s ease;
+    }
+    .art-card-media:hover .art-card-img {
+      transform: scale(1.04);
     }
 
     .art-card-badge {
@@ -726,9 +818,9 @@
       backdrop-filter: blur(8px);
       padding: 0.2rem 0.5rem;
       border-radius: 4px;
-      font-family: var(--font-mono);
+      font-family: 'Source Code Pro', monospace;
       font-size: 0.68rem;
-      color: var(--accent-lime);
+      color: #ccff00;
       border: 1px solid rgba(204, 255, 0, 0.25);
     }
 
@@ -736,11 +828,11 @@
       position: absolute;
       top: 8px;
       right: 8px;
-      background: var(--accent-lime);
+      background: var(--border-focus);
       color: #121212;
       padding: 0.2rem 0.5rem;
       border-radius: 4px;
-      font-family: var(--font-mono);
+      font-family: 'Source Code Pro', monospace;
       font-size: 0.68rem;
       font-weight: 700;
     }
@@ -754,10 +846,14 @@
     }
 
     .art-card-title {
-      font-family: var(--font-heading);
+      font-family: 'Oswald', sans-serif;
       font-size: 1.2rem;
       font-weight: 600;
       line-height: 1.2;
+      cursor: pointer;
+    }
+    .art-card-title:hover {
+      color: var(--accent-purple);
     }
 
     .art-card-meta {
@@ -775,16 +871,17 @@
     }
 
     .art-card-price {
-      font-family: var(--font-mono);
+      font-family: 'Source Code Pro', monospace;
       font-size: 0.82rem;
-      color: var(--accent-lime);
+      color: var(--text-main);
       font-weight: 600;
       margin-top: 0.15rem;
     }
 
     .art-card-actions {
       display: flex;
-      gap: 0.45rem;
+      flex-wrap: wrap;
+      gap: 0.35rem;
       padding-top: 0.75rem;
       border-top: 1px solid var(--border-color);
       margin-top: auto;
@@ -814,7 +911,7 @@
       position: fixed;
       bottom: 20px;
       right: 20px;
-      z-index: 100;
+      z-index: 1000;
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
@@ -826,7 +923,7 @@
       color: var(--text-main);
       padding: 0.85rem 1.15rem;
       border-radius: 8px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
       display: flex;
       align-items: center;
       gap: 0.65rem;
@@ -836,7 +933,7 @@
     }
 
     .toast-success {
-      border-left: 4px solid var(--accent-lime);
+      border-left: 4px solid var(--success);
     }
 
     .toast-error {
@@ -850,8 +947,8 @@
 
     /* Spin loader */
     .spinner {
-      border: 2px solid rgba(0, 0, 0, 0.2);
-      border-top: 2px solid #000;
+      border: 2px solid rgba(120, 120, 120, 0.3);
+      border-top: 2px solid currentColor;
       border-radius: 50%;
       width: 15px;
       height: 15px;
@@ -874,6 +971,11 @@
       <span class="brand-badge">Studio CMS</span>
     </a>
     <div class="header-actions">
+      <!-- Color Scheme Switcher Button -->
+      <button id="color-switcher" class="color-switcher-btn" type="button" role="switch" aria-label="Toggle light/dark mode" title="Toggle Light/Dark Theme">
+        <i class="ph-bold ph-sun-horizon"></i>
+      </button>
+
       <a href="works.html" target="_blank" class="btn btn-outline btn-sm">
         <i class="ph-bold ph-arrow-square-out"></i> Live Works
       </a>
@@ -927,7 +1029,7 @@
             <input type="password" id="studioPasscodeInput" class="passcode-input" placeholder="Enter Access Code (e.g. baffoe2026)">
             <button type="button" id="unlockPasscodeBtn" class="btn btn-outline btn-sm">Unlock</button>
           </div>
-          <div id="passcodeError" style="display:none; color:#ff7875; font-size:0.75rem; margin-top:0.35rem; text-align:left;"></div>
+          <div id="passcodeError" style="display:none; color:var(--danger); font-size:0.75rem; margin-top:0.35rem; text-align:left;"></div>
         </div>
 
         <!-- Authorized Studio Access Chips (Centered & Aligned) -->
@@ -952,7 +1054,7 @@
       <div class="studio-hero">
         <div class="studio-hero-text">
           <h1>Studio Artwork Manager</h1>
-          <p>Add, publish, and manage artworks. Any new piece appears instantly across the live website.</p>
+          <p>Add, edit, publish, and manage artworks. Any new piece appears instantly across the live website.</p>
         </div>
 
         <div class="studio-stats">
@@ -978,14 +1080,17 @@
       <!-- Studio Work Grid -->
       <div class="studio-grid">
 
-        <!-- Form Panel: Upload New Artwork -->
-        <div class="form-panel">
-          <div class="panel-title">
+        <!-- Form Panel: Upload / Edit Artwork -->
+        <div class="form-panel" id="formPanel">
+          <div class="panel-title" id="formPanelTitle">
             <i class="ph-bold ph-paint-brush"></i> Publish New Artwork
           </div>
-          <p class="panel-desc">All photos are automatically compressed to ultra-high-definition WebP and stored 100% free.</p>
+          <p class="panel-desc" id="formPanelDesc">All photos are automatically compressed to ultra-high-definition WebP and stored 100% free.</p>
 
           <form id="artworkForm">
+            <!-- Hidden Edit ID -->
+            <input type="hidden" id="editArtworkId" value="">
+
             <!-- Artwork Title -->
             <div class="form-group">
               <label for="artTitle">Artwork Title *</label>
@@ -1072,11 +1177,16 @@
               </label>
             </div>
 
-            <!-- Submit Button -->
-            <button type="submit" id="submitBtn" class="btn btn-lime" style="width: 100%; padding: 0.85rem; margin-top: 0.5rem;">
-              <span id="submitBtnText"><i class="ph-bold ph-plus-circle"></i> Publish Artwork Live</span>
-              <span id="submitSpinner" class="spinner" style="display:none;"></span>
-            </button>
+            <!-- Submit Button & Cancel Edit Button -->
+            <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:0.75rem;">
+              <button type="submit" id="submitBtn" class="btn btn-lime" style="width: 100%; padding: 0.85rem;">
+                <span id="submitBtnText"><i class="ph-bold ph-plus-circle"></i> Publish Artwork Live</span>
+                <span id="submitSpinner" class="spinner" style="display:none;"></span>
+              </button>
+              <button type="button" id="cancelEditBtn" class="btn btn-outline" style="width: 100%; display:none; padding: 0.65rem;">
+                <i class="ph-bold ph-x-circle"></i> Cancel Editing
+              </button>
+            </div>
           </form>
         </div>
 
@@ -1090,14 +1200,27 @@
               <p class="panel-desc" style="margin-bottom:0;">Real-time inventory from Firebase database.</p>
             </div>
 
-            <!-- Category Filters -->
-            <div class="inventory-filters">
-              <button class="filter-btn active" data-filter="all">All</button>
-              <button class="filter-btn" data-filter="Canvas Painting">Canvas</button>
-              <button class="filter-btn" data-filter="Live Event Art">Live Event</button>
-              <button class="filter-btn" data-filter="Monumental Mural">Murals</button>
-              <button class="filter-btn" data-filter="Rhino & Blender 3D">3D Digital</button>
+            <div style="display:flex; gap:0.5rem;">
+              <!-- Export Catalog Backup Button -->
+              <button id="exportBackupBtn" class="btn btn-outline btn-sm" title="Download JSON Backup">
+                <i class="ph-bold ph-download-simple"></i> Backup JSON
+              </button>
             </div>
+          </div>
+
+          <!-- Search & Filter Controls -->
+          <div class="inventory-search-row">
+            <input type="text" id="catalogSearchInput" class="inventory-search-input" placeholder="Search by title, medium, dimensions, or price...">
+          </div>
+
+          <!-- Category Filters -->
+          <div class="inventory-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="Canvas Painting">Canvas</button>
+            <button class="filter-btn" data-filter="Live Event Art">Live Event</button>
+            <button class="filter-btn" data-filter="Monumental Mural">Murals</button>
+            <button class="filter-btn" data-filter="Rhino & Blender 3D">3D Digital</button>
+            <button class="filter-btn" data-filter="Heritage & Gold Leaf">Gold Leaf</button>
           </div>
 
           <!-- Artworks Grid -->
@@ -1150,12 +1273,51 @@
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     import { firebaseConfig, isAuthorizedEmail, AUTHORIZED_EMAILS } from "./js/firebase-config.js";
+    import { openDynamicArtworkModal } from "./js/dynamic-artworks.js";
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
+
+    // Theme Switcher Logic
+    const colorSwitcherBtn = document.getElementById("color-switcher");
+
+    function getStoredTheme() {
+      try {
+        const stored = localStorage.getItem("template.theme");
+        if (stored) return stored;
+      } catch (e) {}
+      return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute("color-scheme", theme);
+      if (colorSwitcherBtn) {
+        if (theme === "light") {
+          colorSwitcherBtn.innerHTML = '<i class="ph-bold ph-moon-stars"></i>';
+          colorSwitcherBtn.setAttribute("aria-label", "Switch to dark mode");
+        } else {
+          colorSwitcherBtn.innerHTML = '<i class="ph-bold ph-sun-horizon"></i>';
+          colorSwitcherBtn.setAttribute("aria-label", "Switch to light mode");
+        }
+      }
+      try {
+        localStorage.setItem("template.theme", theme);
+      } catch (e) {}
+      window.dispatchEvent(new Event("themechange"));
+    }
+
+    if (colorSwitcherBtn) {
+      colorSwitcherBtn.addEventListener("click", () => {
+        const current = document.documentElement.getAttribute("color-scheme") || getStoredTheme();
+        const next = current === "light" ? "dark" : "light";
+        applyTheme(next);
+      });
+    }
+
+    applyTheme(getStoredTheme());
 
     // DOM Elements
     const authView = document.getElementById("authView");
@@ -1172,6 +1334,10 @@
     const authAlert = document.getElementById("authAlert");
 
     // Form Elements
+    const formPanel = document.getElementById("formPanel");
+    const formPanelTitle = document.getElementById("formPanelTitle");
+    const formPanelDesc = document.getElementById("formPanelDesc");
+    const editArtworkId = document.getElementById("editArtworkId");
     const artworkForm = document.getElementById("artworkForm");
     const artFileInput = document.getElementById("artFileInput");
     const dropZone = document.getElementById("dropZone");
@@ -1183,11 +1349,14 @@
     const submitBtn = document.getElementById("submitBtn");
     const submitBtnText = document.getElementById("submitBtnText");
     const submitSpinner = document.getElementById("submitSpinner");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
 
     // Catalog & Stats Elements
     const artworksGrid = document.getElementById("artworksGrid");
     const emptyState = document.getElementById("emptyState");
     const catalogCount = document.getElementById("catalogCount");
+    const catalogSearchInput = document.getElementById("catalogSearchInput");
+    const exportBackupBtn = document.getElementById("exportBackupBtn");
     const statTotal = document.getElementById("statTotal");
     const statFeatured = document.getElementById("statFeatured");
     const statCanvas = document.getElementById("statCanvas");
@@ -1197,6 +1366,7 @@
     // State
     let currentArtworks = [];
     let activeFilter = "all";
+    let searchQuery = "";
     let currentCompressedBase64 = null;
     let isPasscodeAuthenticated = false;
 
@@ -1205,7 +1375,7 @@
       const toast = document.createElement("div");
       toast.className = `toast toast-${type}`;
       toast.innerHTML = `
-        <i class="ph-bold ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'}" style="font-size:1.25rem; color:${type === 'success' ? 'var(--accent-lime)' : 'var(--danger)'}"></i>
+        <i class="ph-bold ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'}" style="font-size:1.25rem; color:${type === 'success' ? 'var(--success)' : 'var(--danger)'}"></i>
         <div>${message}</div>
       `;
       document.getElementById("toastContainer").appendChild(toast);
@@ -1248,7 +1418,7 @@
         authAlert.style.display = "block";
       });
 
-    // Check localStorage for session passcode
+    // Check sessionStorage for session passcode
     if (sessionStorage.getItem("baffoe_studio_session") === "authorized") {
       isPasscodeAuthenticated = true;
       activateDashboard("baffoekwabena.art@gmail.com", "Baffoe Kwabena (Studio)", "img/favicon/favicon.ico");
@@ -1302,13 +1472,12 @@
         }
       } catch (err) {
         console.warn("Popup blocked or failed:", err);
-        // If popup was blocked by mobile browser or user agent, automatically use redirect!
         if (
           err.code === "auth/popup-blocked" ||
           err.code === "auth/popup-closed-by-user" ||
           err.code === "auth/cancelled-popup-request"
         ) {
-          showToast("Popup blocked by browser. Switching to full-screen redirect...", "success");
+          showToast("Popup blocked. Switching to full-screen redirect...", "success");
           setTimeout(() => {
             signInWithRedirect(auth, provider);
           }, 600);
@@ -1406,7 +1575,7 @@
         imagePreviewImg.src = result.dataUrl;
         imageMetaText.innerText = `${result.width} × ${result.height} px`;
         imageSizeBadge.innerText = `${result.sizeKB} KB (WebP)`;
-        artUrlInput.value = ""; // Clear URL if file selected
+        artUrlInput.value = "";
       } catch (err) {
         console.error("Compression failed:", err);
         showToast("Failed to process image file.", "error");
@@ -1449,7 +1618,23 @@
       }
     });
 
-    // Form Submission: Publish Artwork to Firestore
+    // Reset Form to Create Mode
+    function resetFormMode() {
+      editArtworkId.value = "";
+      artworkForm.reset();
+      currentCompressedBase64 = null;
+      imagePreviewContainer.style.display = "none";
+      document.getElementById("artYear").value = 2026;
+      document.getElementById("artFeatured").checked = true;
+      formPanelTitle.innerHTML = '<i class="ph-bold ph-paint-brush"></i> Publish New Artwork';
+      formPanelDesc.innerText = 'All photos are automatically compressed to ultra-high-definition WebP and stored 100% free.';
+      submitBtnText.innerHTML = '<i class="ph-bold ph-plus-circle"></i> Publish Artwork Live';
+      cancelEditBtn.style.display = "none";
+    }
+
+    cancelEditBtn.addEventListener("click", resetFormMode);
+
+    // Form Submission: Create OR Update Artwork in Firestore
     artworkForm.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -1461,10 +1646,11 @@
       const price = document.getElementById("artPrice").value.trim() || "Commission Inquiry";
       const description = document.getElementById("artDescription").value.trim();
       const isFeatured = document.getElementById("artFeatured").checked;
+      const editingId = editArtworkId.value;
 
       const imageUrl = currentCompressedBase64 || artUrlInput.value.trim();
 
-      if (!imageUrl) {
+      if (!imageUrl && !editingId) {
         showToast("Please select an artwork photo or provide an image URL.", "error");
         return;
       }
@@ -1484,27 +1670,30 @@
           price,
           description,
           isFeatured,
-          imageUrl,
-          createdAt: serverTimestamp(),
-          authorEmail: auth.currentUser?.email || "baffoekwabena.art@gmail.com"
+          updatedAt: serverTimestamp()
         };
 
-        await addDoc(collection(db, "artworks"), docData);
+        if (imageUrl) {
+          docData.imageUrl = imageUrl;
+        }
 
-        showToast(`"${title}" published live successfully!`);
+        if (editingId) {
+          // Update existing artwork
+          await updateDoc(doc(db, "artworks", editingId), docData);
+          showToast(`"${title}" updated successfully!`);
+        } else {
+          // Publish new artwork
+          docData.createdAt = serverTimestamp();
+          docData.authorEmail = auth.currentUser?.email || "baffoekwabena.art@gmail.com";
+          await addDoc(collection(db, "artworks"), docData);
+          showToast(`"${title}" published live successfully!`);
+        }
 
-        // Reset form
-        artworkForm.reset();
-        currentCompressedBase64 = null;
-        imagePreviewContainer.style.display = "none";
-        document.getElementById("artYear").value = 2026;
-        document.getElementById("artFeatured").checked = true;
-
-        // Reload artworks catalog
+        resetFormMode();
         await loadArtworks();
       } catch (err) {
-        console.error("Error publishing artwork:", err);
-        showToast(`Publishing failed: ${err.message}`, "error");
+        console.error("Error saving artwork:", err);
+        showToast(`Action failed: ${err.message}`, "error");
       } finally {
         submitBtn.disabled = false;
         submitBtnText.style.display = "inline-flex";
@@ -1531,14 +1720,29 @@
       }
     }
 
+    // Filter Artworks based on active category & search query
+    function getFilteredArtworks() {
+      return currentArtworks.filter((art) => {
+        const matchesCategory = activeFilter === "all" || art.category === activeFilter;
+        if (!searchQuery) return matchesCategory;
+
+        const q = searchQuery.toLowerCase();
+        const matchesSearch =
+          (art.title && art.title.toLowerCase().includes(q)) ||
+          (art.medium && art.medium.toLowerCase().includes(q)) ||
+          (art.dimensions && art.dimensions.toLowerCase().includes(q)) ||
+          (art.price && art.price.toLowerCase().includes(q)) ||
+          (art.description && art.description.toLowerCase().includes(q));
+
+        return matchesCategory && matchesSearch;
+      });
+    }
+
     // Render Artworks Grid
     function renderArtworks() {
       artworksGrid.innerHTML = "";
 
-      const filtered = activeFilter === "all"
-        ? currentArtworks
-        : currentArtworks.filter(a => a.category === activeFilter);
-
+      const filtered = getFilteredArtworks();
       catalogCount.innerText = filtered.length;
 
       if (filtered.length === 0) {
@@ -1552,7 +1756,7 @@
         const card = document.createElement("div");
         card.className = "art-card";
         card.innerHTML = `
-          <div class="art-card-media">
+          <div class="art-card-media" title="Click to preview artwork">
             <img class="art-card-img" src="${art.imageUrl}" alt="${art.title}" loading="lazy">
             <span class="art-card-badge">${art.category}</span>
             ${art.isFeatured ? '<span class="art-card-featured">HOMEPAGE</span>' : ''}
@@ -1562,16 +1766,22 @@
             <div class="art-card-meta">
               <span><i class="ph-bold ph-frame-corners"></i> ${art.dimensions}</span>
               <span><i class="ph-bold ph-palette"></i> ${art.medium}</span>
-              <span><i class="ph-bold ph-calendar-blank"></i> ${art.year}</span>
+              <span><i class="ph-bold ph-calendar-blank"></i> ${art.year || 2026}</span>
             </div>
             <div class="art-card-price">${art.price}</div>
             <div class="art-card-actions">
-              <button class="btn btn-outline btn-sm toggle-featured-btn" data-id="${art.id}" data-featured="${art.isFeatured}">
+              <button class="btn btn-outline btn-sm edit-art-btn" data-id="${art.id}" title="Edit this artwork">
+                <i class="ph-bold ph-pencil-simple"></i> Edit
+              </button>
+              <button class="btn btn-outline btn-sm share-art-btn" data-id="${art.id}" data-title="${art.title}" title="Copy WhatsApp booking link">
+                <i class="ph-bold ph-share-network"></i> Share
+              </button>
+              <button class="btn btn-outline btn-sm toggle-featured-btn" data-id="${art.id}" data-featured="${art.isFeatured}" title="Toggle Homepage Feature">
                 <i class="ph-bold ${art.isFeatured ? 'ph-star-fill' : 'ph-star'}"></i>
                 ${art.isFeatured ? 'Unfeature' : 'Feature'}
               </button>
-              <button class="btn btn-danger btn-sm delete-art-btn" data-id="${art.id}" data-title="${art.title}">
-                <i class="ph-bold ph-trash"></i> Delete
+              <button class="btn btn-danger btn-sm delete-art-btn" data-id="${art.id}" data-title="${art.title}" title="Delete artwork">
+                <i class="ph-bold ph-trash"></i>
               </button>
             </div>
           </div>
@@ -1579,7 +1789,69 @@
         artworksGrid.appendChild(card);
       });
 
-      // Bind Action Buttons
+      // Bind Preview Modal Click on Image & Title
+      document.querySelectorAll(".art-card-media, .art-card-title").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          const card = el.closest(".art-card");
+          const editBtn = card.querySelector(".edit-art-btn");
+          if (editBtn && editBtn.dataset.id) {
+            const art = currentArtworks.find(a => a.id === editBtn.dataset.id);
+            if (art) {
+              openDynamicArtworkModal(art);
+            }
+          }
+        });
+      });
+
+      // Bind Edit Buttons
+      document.querySelectorAll(".edit-art-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const id = e.currentTarget.dataset.id;
+          const art = currentArtworks.find(a => a.id === id);
+          if (!art) return;
+
+          editArtworkId.value = art.id;
+          document.getElementById("artTitle").value = art.title || "";
+          document.getElementById("artCategory").value = art.category || "Canvas Painting";
+          document.getElementById("artYear").value = art.year || 2026;
+          document.getElementById("artMedium").value = art.medium || "";
+          document.getElementById("artDimensions").value = art.dimensions || "";
+          document.getElementById("artPrice").value = art.price || "";
+          document.getElementById("artDescription").value = art.description || "";
+          document.getElementById("artFeatured").checked = !!art.isFeatured;
+
+          if (art.imageUrl) {
+            imagePreviewImg.src = art.imageUrl;
+            imagePreviewContainer.style.display = "block";
+            imageMetaText.innerText = "Current Photo";
+            imageSizeBadge.innerText = "Loaded";
+          }
+
+          formPanelTitle.innerHTML = `<i class="ph-bold ph-pencil-simple"></i> Edit: "${art.title}"`;
+          formPanelDesc.innerText = "Make your changes below and click 'Save Changes' to update this artwork live.";
+          submitBtnText.innerHTML = '<i class="ph-bold ph-check"></i> Save Changes';
+          cancelEditBtn.style.display = "inline-flex";
+
+          formPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+          showToast(`Editing "${art.title}"`);
+        });
+      });
+
+      // Bind Share WhatsApp Link
+      document.querySelectorAll(".share-art-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const title = e.currentTarget.dataset.title;
+          const waText = encodeURIComponent(`Hello Baffoe, I am inquiring about your artwork "${title}". Is it available?`);
+          const link = `https://wa.me/233540455082?text=${waText}`;
+          navigator.clipboard.writeText(link).then(() => {
+            showToast("WhatsApp booking link copied to clipboard!");
+          }).catch(() => {
+            showToast("Direct link: " + link);
+          });
+        });
+      });
+
+      // Bind Feature Toggle
       document.querySelectorAll(".toggle-featured-btn").forEach((btn) => {
         btn.addEventListener("click", async (e) => {
           const id = e.currentTarget.dataset.id;
@@ -1596,6 +1868,7 @@
         });
       });
 
+      // Bind Delete Button
       document.querySelectorAll(".delete-art-btn").forEach((btn) => {
         btn.addEventListener("click", async (e) => {
           const id = e.currentTarget.dataset.id;
@@ -1604,6 +1877,7 @@
             try {
               await deleteDoc(doc(db, "artworks", id));
               showToast(`"${title}" deleted from portfolio.`);
+              if (editArtworkId.value === id) resetFormMode();
               loadArtworks();
             } catch (err) {
               showToast("Failed to delete artwork", "error");
@@ -1621,6 +1895,12 @@
       statOther.innerText = currentArtworks.filter(a => a.category !== "Canvas Painting").length;
     }
 
+    // Search Input Event
+    catalogSearchInput.addEventListener("input", (e) => {
+      searchQuery = e.target.value.trim();
+      renderArtworks();
+    });
+
     // Category Filter Buttons
     filterBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -1629,6 +1909,23 @@
         activeFilter = btn.dataset.filter;
         renderArtworks();
       });
+    });
+
+    // Export Catalog to JSON Backup
+    exportBackupBtn.addEventListener("click", () => {
+      if (currentArtworks.length === 0) {
+        showToast("No artworks to backup yet.", "error");
+        return;
+      }
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentArtworks, null, 2));
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", dataStr);
+      const dateStr = new Date().toISOString().split("T")[0];
+      downloadAnchor.setAttribute("download", `baffoe-artworks-backup-${dateStr}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast(`Exported ${currentArtworks.length} artworks to JSON backup!`);
     });
 
   </script>

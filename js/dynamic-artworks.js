@@ -65,8 +65,13 @@ function initArtworkModal() {
 }
 
 // Global modal opener
-window.openDynamicArtworkModal = function(id) {
-  const art = dynamicArtworksMap.get(id);
+export function openDynamicArtworkModal(idOrArt) {
+  let art = null;
+  if (typeof idOrArt === "object" && idOrArt !== null) {
+    art = idOrArt;
+  } else {
+    art = dynamicArtworksMap.get(idOrArt);
+  }
   if (!art) return;
 
   initArtworkModal();
@@ -82,7 +87,7 @@ window.openDynamicArtworkModal = function(id) {
     <span style="background:rgba(255,255,255,0.08); color:#ddd; padding:0.25rem 0.65rem; border-radius:4px; font-size:0.75rem; font-family:'Source Code Pro',monospace;">${art.year || 2026}</span>
   `;
 
-  document.getElementById("modalArtMeta").innerText = `MEDIUM: ${art.medium.toUpperCase()}`;
+  document.getElementById("modalArtMeta").innerText = `MEDIUM: ${(art.medium || "FINE ART").toUpperCase()}`;
   document.getElementById("modalArtDesc").innerText = art.description || "Created with signature impasto techniques and contemporary Akan symbolism in Baffoe's Accra studio.";
   document.getElementById("modalArtPrice").innerText = art.price ? `STATUS: ${art.price}` : "AVAILABLE UPON INQUIRY";
 
@@ -91,7 +96,9 @@ window.openDynamicArtworkModal = function(id) {
 
   modal.style.display = "flex";
   document.body.style.overflow = "hidden";
-};
+}
+
+window.openDynamicArtworkModal = openDynamicArtworkModal;
 
 // Initialize Firestore & Load Artworks
 export async function loadStudioArtworks() {
