@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <title>Baffoe Kwabena Studio — Artwork CMS & Admin Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="img/favicon/favicon.ico" sizes="any">
+  <link rel="icon" href="img/favicon/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/favicon/apple-touch-icon.png">
+
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="css/plugins.css">
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap");
+
+    :root {
+      --bg-dark: #121212;
+      --bg-card: #1c1b1b;
+      --bg-card-hover: #232222;
+      --bg-input: #262525;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: #ccff00;
+      --accent-lime: #ccff00;
+      --accent-lime-hover: #b8e600;
+      --accent-purple: #9d4edd;
+      --text-main: #f3f3f3;
+      --text-muted: #9e9d9d;
+      --text-dim: #6c6b6b;
+      --danger: #ff4d4f;
+      --success: #52c41a;
+      --font-heading: 'Oswald', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'Source Code Pro', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+
+    /* Studio Header */
+    header.studio-header {
+      background: rgba(20, 19, 19, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-logo {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .brand-badge {
+      background: rgba(204, 255, 0, 0.12);
+      color: var(--accent-lime);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: 1px solid rgba(204, 255, 0, 0.25);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 0.35rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+    }
+
+    .user-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg-input);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-lime {
+      background: var(--accent-lime);
+      color: #121212;
+    }
+    .btn-lime:hover {
+      background: var(--accent-lime-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+    .btn-outline:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-danger {
+      background: rgba(255, 77, 79, 0.12);
+      color: var(--danger);
+      border: 1px solid rgba(255, 77, 79, 0.25);
+    }
+    .btn-danger:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .btn-sm {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.78rem;
+    }
+
+    /* Main Container */
+    .studio-main {
+      flex: 1;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Auth Screen */
+    .auth-overlay {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 75vh;
+      padding: 1.5rem;
+    }
+
+    .auth-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 3rem 2.5rem;
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .auth-logo {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--accent-lime);
+      margin-bottom: 1.5rem;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+    }
+
+    .auth-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .auth-whitelist {
+      background: var(--bg-dark);
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 0.85rem;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      margin-top: 1.5rem;
+      text-align: left;
+    }
+
+    .auth-whitelist ul {
+      margin-top: 0.4rem;
+      margin-left: 1.2rem;
+      color: var(--text-muted);
+    }
+
+    .auth-alert {
+      background: rgba(255, 77, 79, 0.12);
+      border: 1px solid rgba(255, 77, 79, 0.3);
+      color: #ff7875;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      margin-bottom: 1.25rem;
+      display: none;
+      text-align: left;
+    }
+
+    /* Dashboard Layout */
+    .dashboard-view {
+      display: none;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .studio-hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .studio-hero-text h1 {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .studio-hero-text p {
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+      font-size: 0.95rem;
+    }
+
+    .studio-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-card .stat-val {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent-lime);
+      line-height: 1;
+    }
+
+    /* Two-Column Studio Layout */
+    .studio-grid {
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .studio-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Form Card */
+    .form-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.75rem;
+      position: sticky;
+      top: 6rem;
+    }
+
+    .panel-title {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .panel-desc {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    label {
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.7rem 0.9rem;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+      width: 100%;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--border-focus);
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    textarea {
+      min-height: 85px;
+      resize: vertical;
+    }
+
+    /* File Uploader Drag & Drop */
+    .upload-zone {
+      border: 2px dashed var(--border-color);
+      border-radius: 10px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.02);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .upload-zone:hover,
+    .upload-zone.dragover {
+      border-color: var(--accent-lime);
+      background: rgba(204, 255, 0, 0.04);
+    }
+
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-icon {
+      font-size: 2.2rem;
+      color: var(--accent-lime);
+      margin-bottom: 0.4rem;
+    }
+
+    .upload-text {
+      font-size: 0.85rem;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    .upload-subtext {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 0.2rem;
+    }
+
+    /* Image Preview Box */
+    .image-preview-container {
+      display: none;
+      margin-top: 0.75rem;
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: #000;
+    }
+
+    .image-preview-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-preview-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+      padding: 0.6rem 0.75rem;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge-compressed {
+      background: var(--accent-lime);
+      color: #121212;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+      font-weight: 700;
+      font-size: 0.68rem;
+    }
+
+    /* Switch toggle */
+    .switch-label {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      text-transform: none;
+      font-family: var(--font-body);
+      user-select: none;
+    }
+
+    .switch-input {
+      appearance: none;
+      width: 38px;
+      height: 22px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      transition: background 0.2s ease;
+    }
+
+    .switch-input:checked {
+      background: var(--accent-lime);
+      border-color: var(--accent-lime);
+    }
+
+    .switch-input::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      transition: transform 0.2s ease;
+    }
+
+    .switch-input:checked::after {
+      transform: translateX(16px);
+      background: #121212;
+    }
+
+    /* Inventory Section */
+    .inventory-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .inventory-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .inventory-filters {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: rgba(204, 255, 0, 0.1);
+      border-color: var(--accent-lime);
+      color: var(--accent-lime);
+    }
+
+    /* Artwork Cards Grid */
+    .artworks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .art-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .art-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-2px);
+    }
+
+    .art-card-media {
+      position: relative;
+      height: 220px;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .art-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .art-card-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(18, 18, 18, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent-lime);
+      border: 1px solid rgba(204, 255, 0, 0.25);
+    }
+
+    .art-card-featured {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--accent-lime);
+      color: #121212;
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .art-card-body {
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      flex: 1;
+    }
+
+    .art-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .art-card-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .art-card-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .art-card-price {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent-lime);
+      font-weight: 600;
+      margin-top: 0.2rem;
+    }
+
+    .art-card-actions {
+      display: flex;
+      gap: 0.5rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: auto;
+    }
+
+    /* Empty state */
+    .empty-state {
+      background: var(--bg-card);
+      border: 1px dashed var(--border-color);
+      border-radius: 12px;
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      color: var(--text-dim);
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .toast {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.9rem 1.25rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.88rem;
+      min-width: 300px;
+      animation: slideIn 0.3s ease;
+    }
+
+    .toast-success {
+      border-left: 4px solid var(--accent-lime);
+    }
+
+    .toast-error {
+      border-left: 4px solid var(--danger);
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Spin loader */
+    .spinner {
+      border: 2px solid rgba(0, 0, 0, 0.2);
+      border-top: 2px solid #000;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Studio Top Navigation -->
+  <header class="studio-header">
+    <a href="index.html" class="header-brand">
+      <span class="brand-logo">BAFFOE</span>
+      <span class="brand-badge">Studio CMS</span>
+    </a>
+    <div class="header-actions">
+      <a href="works.html" target="_blank" class="btn btn-outline btn-sm">
+        <i class="ph-bold ph-arrow-square-out"></i> Live Works
+      </a>
+      <div id="userPill" class="user-pill" style="display:none;">
+        <img id="userAvatar" class="user-avatar" src="" alt="Admin">
+        <span id="userName" style="font-weight: 500;">Admin</span>
+      </div>
+      <button id="signOutBtn" class="btn btn-outline btn-sm" style="display:none;">
+        <i class="ph-bold ph-sign-out"></i> Sign Out
+      </button>
+    </div>
+  </header>
+
+  <main class="studio-main">
+
+    <!-- Auth View (Sign in) -->
+    <div id="authView" class="auth-overlay">
+      <div class="auth-card">
+        <div class="auth-logo">BAFFOE KWABENA</div>
+        <div class="auth-title">STUDIO CURATORIAL PORTAL</div>
+        <p class="auth-desc">
+          Upload new canvas masterpieces, live event commissions, architectural murals, and 3D Rhino/Blender designs directly to your live portfolio.
+        </p>
+
+        <div id="authAlert" class="auth-alert"></div>
+
+        <button id="googleSignInBtn" class="btn btn-lime" style="width: 100%; padding: 0.85rem 1.5rem; font-size: 0.95rem;">
+          <svg width="18" height="18" viewBox="0 0 24 24" style="margin-right: 6px;">
+            <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          Sign in with Google
+        </button>
+
+        <div class="auth-whitelist">
+          <strong>Authorized Studio Accounts:</strong>
+          <ul>
+            <li>odamephilip966@gmail.com</li>
+            <li>philipodametech@gmail.com</li>
+            <li>baffoekwabena.art@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard View (After Auth) -->
+    <div id="dashboardView" class="dashboard-view">
+
+      <!-- Hero Header & Stats -->
+      <div class="studio-hero">
+        <div class="studio-hero-text">
+          <h1>Studio Artwork Manager</h1>
+          <p>Add, publish, and manage artworks. Any new piece appears instantly on the live website.</p>
+        </div>
+
+        <div class="studio-stats">
+          <div class="stat-card">
+            <span class="stat-label">Total Artworks</span>
+            <span id="statTotal" class="stat-val">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Homepage Featured</span>
+            <span id="statFeatured" class="stat-val">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Canvas Masterpieces</span>
+            <span id="statCanvas" class="stat-val">0</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Live & Murals</span>
+            <span id="statOther" class="stat-val">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Studio Work Grid -->
+      <div class="studio-grid">
+
+        <!-- Form Panel: Upload New Artwork -->
+        <div class="form-panel">
+          <div class="panel-title">
+            <i class="ph-bold ph-paint-brush"></i> Publish New Artwork
+          </div>
+          <p class="panel-desc">All photos are automatically compressed to ultra-high-definition WebP and stored 100% free.</p>
+
+          <form id="artworkForm">
+            <!-- Artwork Title -->
+            <div class="form-group">
+              <label for="artTitle">Artwork Title *</label>
+              <input type="text" id="artTitle" required placeholder="e.g. Sankofa's Golden Horizon">
+            </div>
+
+            <!-- Category & Medium -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="artCategory">Pillar / Category *</label>
+                <select id="artCategory" required>
+                  <option value="Canvas Painting">Canvas Painting</option>
+                  <option value="Live Event Art">Live Event Art</option>
+                  <option value="Monumental Mural">Monumental Mural</option>
+                  <option value="Rhino & Blender 3D">Rhino & Blender 3D</option>
+                  <option value="Heritage & Gold Leaf">Heritage & Gold Leaf</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="artYear">Year *</label>
+                <input type="number" id="artYear" required value="2026" min="2015" max="2035">
+              </div>
+            </div>
+
+            <!-- Medium & Dimensions -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="artMedium">Medium & Materials *</label>
+                <input type="text" id="artMedium" required placeholder="e.g. Acrylic & 24K Gold Leaf on Linen">
+              </div>
+
+              <div class="form-group">
+                <label for="artDimensions">Dimensions *</label>
+                <input type="text" id="artDimensions" required placeholder="e.g. 120 × 150 cm">
+              </div>
+            </div>
+
+            <!-- Price & Availability -->
+            <div class="form-group">
+              <label for="artPrice">Collector Status / Price</label>
+              <input type="text" id="artPrice" placeholder="e.g. $3,800 • Available or Private Collection">
+            </div>
+
+            <!-- Image Upload Zone -->
+            <div class="form-group">
+              <label>Artwork Photo *</label>
+              <div id="dropZone" class="upload-zone">
+                <input type="file" id="artFileInput" accept="image/*">
+                <div class="upload-icon">
+                  <i class="ph-bold ph-cloud-arrow-up"></i>
+                </div>
+                <div class="upload-text">Drag photo here or tap to upload from phone</div>
+                <div class="upload-subtext">Supports camera photos, JPG, PNG, WebP (auto-optimized)</div>
+              </div>
+
+              <!-- Image Preview -->
+              <div id="imagePreviewContainer" class="image-preview-container">
+                <img id="imagePreviewImg" class="image-preview-img" src="" alt="Preview">
+                <div class="image-preview-info">
+                  <span id="imageMetaText">WebP Compressed</span>
+                  <span class="badge-compressed" id="imageSizeBadge">Ready</span>
+                </div>
+              </div>
+
+              <!-- Fallback External URL -->
+              <div style="margin-top: 0.65rem;">
+                <label for="artUrlInput" style="font-size: 0.72rem; color: var(--text-dim);">Or paste image URL (Cloudinary / Drive / Web link):</label>
+                <input type="text" id="artUrlInput" placeholder="https://res.cloudinary.com/... or https://...">
+              </div>
+            </div>
+
+            <!-- Curatorial Story -->
+            <div class="form-group">
+              <label for="artDescription">Curatorial Story / Concept</label>
+              <textarea id="artDescription" placeholder="An evocative exploration of Akan cultural cosmology and tactile impasto brushwork..."></textarea>
+            </div>
+
+            <!-- Featured on Homepage Toggle -->
+            <div class="form-group">
+              <label class="switch-label">
+                <input type="checkbox" id="artFeatured" class="switch-input" checked>
+                <span>Feature in "Selected Works" on Homepage</span>
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn" class="btn btn-lime" style="width: 100%; padding: 0.85rem; margin-top: 0.5rem;">
+              <span id="submitBtnText"><i class="ph-bold ph-plus-circle"></i> Publish Artwork Live</span>
+              <span id="submitSpinner" class="spinner" style="display:none;"></span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Inventory Panel: Manage Artworks -->
+        <div class="inventory-panel">
+          <div class="inventory-header">
+            <div>
+              <div class="panel-title" style="margin-bottom:0;">
+                <i class="ph-bold ph-gallery"></i> Studio Catalog (<span id="catalogCount">0</span>)
+              </div>
+              <p class="panel-desc" style="margin-bottom:0;">Real-time inventory from Firebase database.</p>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="inventory-filters">
+              <button class="filter-btn active" data-filter="all">All</button>
+              <button class="filter-btn" data-filter="Canvas Painting">Canvas</button>
+              <button class="filter-btn" data-filter="Live Event Art">Live Event</button>
+              <button class="filter-btn" data-filter="Monumental Mural">Murals</button>
+              <button class="filter-btn" data-filter="Rhino & Blender 3D">3D Digital</button>
+            </div>
+          </div>
+
+          <!-- Artworks Grid -->
+          <div id="artworksGrid" class="artworks-grid">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Empty State -->
+          <div id="emptyState" class="empty-state" style="display:none;">
+            <div class="empty-icon"><i class="ph-bold ph-image-square"></i></div>
+            <div style="font-size:1.1rem; font-weight:600; color:var(--text-main);">No Artworks in Studio Database Yet</div>
+            <p style="font-size:0.85rem; max-width:360px;">
+              Fill in the form on the left with Baffoe's artwork details and click "Publish Artwork Live". It will appear here and on the live website immediately!
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Firebase Modular SDK & Studio CMS Controller -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getAuth,
+      signInWithPopup,
+      GoogleAuthProvider,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      doc,
+      deleteDoc,
+      updateDoc,
+      query,
+      orderBy,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    import { firebaseConfig, isAuthorizedEmail, AUTHORIZED_EMAILS } from "./js/firebase-config.js";
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    // DOM Elements
+    const authView = document.getElementById("authView");
+    const dashboardView = document.getElementById("dashboardView");
+    const googleSignInBtn = document.getElementById("googleSignInBtn");
+    const signOutBtn = document.getElementById("signOutBtn");
+    const userPill = document.getElementById("userPill");
+    const userAvatar = document.getElementById("userAvatar");
+    const userName = document.getElementById("userName");
+    const authAlert = document.getElementById("authAlert");
+
+    // Form Elements
+    const artworkForm = document.getElementById("artworkForm");
+    const artFileInput = document.getElementById("artFileInput");
+    const dropZone = document.getElementById("dropZone");
+    const artUrlInput = document.getElementById("artUrlInput");
+    const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+    const imagePreviewImg = document.getElementById("imagePreviewImg");
+    const imageMetaText = document.getElementById("imageMetaText");
+    const imageSizeBadge = document.getElementById("imageSizeBadge");
+    const submitBtn = document.getElementById("submitBtn");
+    const submitBtnText = document.getElementById("submitBtnText");
+    const submitSpinner = document.getElementById("submitSpinner");
+
+    // Catalog & Stats Elements
+    const artworksGrid = document.getElementById("artworksGrid");
+    const emptyState = document.getElementById("emptyState");
+    const catalogCount = document.getElementById("catalogCount");
+    const statTotal = document.getElementById("statTotal");
+    const statFeatured = document.getElementById("statFeatured");
+    const statCanvas = document.getElementById("statCanvas");
+    const statOther = document.getElementById("statOther");
+    const filterBtns = document.querySelectorAll(".filter-btn");
+
+    // State
+    let currentArtworks = [];
+    let activeFilter = "all";
+    let currentCompressedBase64 = null;
+
+    // Toast Helper
+    function showToast(message, type = "success") {
+      const toast = document.createElement("div");
+      toast.className = `toast toast-${type}`;
+      toast.innerHTML = `
+        <i class="ph-bold ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'}" style="font-size:1.25rem; color:${type === 'success' ? 'var(--accent-lime)' : 'var(--danger)'}"></i>
+        <div>${message}</div>
+      `;
+      document.getElementById("toastContainer").appendChild(toast);
+      setTimeout(() => {
+        toast.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(50px)";
+        setTimeout(() => toast.remove(), 400);
+      }, 4000);
+    }
+
+    // Google Sign In
+    googleSignInBtn.addEventListener("click", async () => {
+      authAlert.style.display = "none";
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        if (!isAuthorizedEmail(user.email)) {
+          authAlert.innerText = `Access Denied: ${user.email} is not in Baffoe's authorized studio whitelist.`;
+          authAlert.style.display = "block";
+          await signOut(auth);
+        }
+      } catch (err) {
+        console.error("Sign in error:", err);
+        authAlert.innerText = `Sign-in error: ${err.message}`;
+        authAlert.style.display = "block";
+      }
+    });
+
+    // Sign Out
+    signOutBtn.addEventListener("click", async () => {
+      await signOut(auth);
+      showToast("Signed out from Studio CMS");
+    });
+
+    // Auth State Observer
+    onAuthStateChanged(auth, async (user) => {
+      if (user && isAuthorizedEmail(user.email)) {
+        authView.style.display = "none";
+        dashboardView.style.display = "flex";
+        userPill.style.display = "flex";
+        signOutBtn.style.display = "inline-flex";
+        userAvatar.src = user.photoURL || "img/favicon/favicon.ico";
+        userName.innerText = user.displayName || user.email.split("@")[0];
+        loadArtworks();
+      } else {
+        authView.style.display = "flex";
+        dashboardView.style.display = "none";
+        userPill.style.display = "none";
+        signOutBtn.style.display = "none";
+      }
+    });
+
+    // Canvas Compression: Resize & convert to ultra-light WebP
+    function compressImageFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            let { width, height } = img;
+            const maxDimension = 1400; // Optimal retina resolution
+
+            if (width > maxDimension || height > maxDimension) {
+              if (width > height) {
+                height = Math.round((height * maxDimension) / width);
+                width = maxDimension;
+              } else {
+                width = Math.round((width * maxDimension) / height);
+                height = maxDimension;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Export to WebP (fallback to JPEG if browser doesn't support WebP export)
+            let dataUrl = canvas.toDataURL("image/webp", 0.82);
+            if (!dataUrl.startsWith("data:image/webp")) {
+              dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+            }
+
+            const sizeKB = Math.round((dataUrl.length * 3 / 4) / 1024);
+            resolve({ dataUrl, width, height, sizeKB });
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Handle File Selection
+    async function handleFile(file) {
+      if (!file || !file.type.startsWith("image/")) {
+        showToast("Please upload a valid image file.", "error");
+        return;
+      }
+
+      imagePreviewContainer.style.display = "block";
+      imageMetaText.innerText = "Optimizing image...";
+      imageSizeBadge.innerText = "...";
+
+      try {
+        const result = await compressImageFile(file);
+        currentCompressedBase64 = result.dataUrl;
+        imagePreviewImg.src = result.dataUrl;
+        imageMetaText.innerText = `${result.width} × ${result.height} px`;
+        imageSizeBadge.innerText = `${result.sizeKB} KB (WebP)`;
+        artUrlInput.value = ""; // Clear URL if file selected
+      } catch (err) {
+        console.error("Compression failed:", err);
+        showToast("Failed to process image file.", "error");
+      }
+    }
+
+    artFileInput.addEventListener("change", (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handleFile(e.target.files[0]);
+      }
+    });
+
+    // Drag and drop handlers
+    dropZone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      dropZone.classList.add("dragover");
+    });
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.classList.remove("dragover");
+    });
+    dropZone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      dropZone.classList.remove("dragover");
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    // Handle URL input preview
+    artUrlInput.addEventListener("input", (e) => {
+      const url = e.target.value.trim();
+      if (url) {
+        currentCompressedBase64 = null;
+        imagePreviewImg.src = url;
+        imagePreviewContainer.style.display = "block";
+        imageMetaText.innerText = "External Hosted Image";
+        imageSizeBadge.innerText = "Remote URL";
+      } else if (!currentCompressedBase64) {
+        imagePreviewContainer.style.display = "none";
+      }
+    });
+
+    // Form Submission: Publish Artwork to Firestore
+    artworkForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById("artTitle").value.trim();
+      const category = document.getElementById("artCategory").value;
+      const year = parseInt(document.getElementById("artYear").value, 10) || 2026;
+      const medium = document.getElementById("artMedium").value.trim();
+      const dimensions = document.getElementById("artDimensions").value.trim();
+      const price = document.getElementById("artPrice").value.trim() || "Commission Inquiry";
+      const description = document.getElementById("artDescription").value.trim();
+      const isFeatured = document.getElementById("artFeatured").checked;
+
+      const imageUrl = currentCompressedBase64 || artUrlInput.value.trim();
+
+      if (!imageUrl) {
+        showToast("Please select an artwork photo or provide an image URL.", "error");
+        return;
+      }
+
+      // UI Loading state
+      submitBtn.disabled = true;
+      submitBtnText.style.display = "none";
+      submitSpinner.style.display = "inline-block";
+
+      try {
+        const docData = {
+          title,
+          category,
+          year,
+          medium,
+          dimensions,
+          price,
+          description,
+          isFeatured,
+          imageUrl,
+          createdAt: serverTimestamp(),
+          authorEmail: auth.currentUser?.email || "admin"
+        };
+
+        await addDoc(collection(db, "artworks"), docData);
+
+        showToast(`"${title}" published live successfully!`);
+
+        // Reset form
+        artworkForm.reset();
+        currentCompressedBase64 = null;
+        imagePreviewContainer.style.display = "none";
+        document.getElementById("artYear").value = 2026;
+        document.getElementById("artFeatured").checked = true;
+
+        // Reload artworks catalog
+        await loadArtworks();
+      } catch (err) {
+        console.error("Error publishing artwork:", err);
+        showToast(`Publishing failed: ${err.message}`, "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtnText.style.display = "inline-flex";
+        submitSpinner.style.display = "none";
+      }
+    });
+
+    // Load Artworks from Firestore
+    async function loadArtworks() {
+      try {
+        const q = query(collection(db, "artworks"), orderBy("createdAt", "desc"));
+        const snapshot = await getDocs(q);
+
+        currentArtworks = [];
+        snapshot.forEach((docSnap) => {
+          currentArtworks.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        renderArtworks();
+        updateStats();
+      } catch (err) {
+        console.error("Error loading artworks:", err);
+        showToast(`Could not load catalog: ${err.message}`, "error");
+      }
+    }
+
+    // Render Artworks Grid
+    function renderArtworks() {
+      artworksGrid.innerHTML = "";
+
+      const filtered = activeFilter === "all"
+        ? currentArtworks
+        : currentArtworks.filter(a => a.category === activeFilter);
+
+      catalogCount.innerText = filtered.length;
+
+      if (filtered.length === 0) {
+        emptyState.style.display = "flex";
+        return;
+      }
+
+      emptyState.style.display = "none";
+
+      filtered.forEach((art) => {
+        const card = document.createElement("div");
+        card.className = "art-card";
+        card.innerHTML = `
+          <div class="art-card-media">
+            <img class="art-card-img" src="${art.imageUrl}" alt="${art.title}" loading="lazy">
+            <span class="art-card-badge">${art.category}</span>
+            ${art.isFeatured ? '<span class="art-card-featured">HOMEPAGE</span>' : ''}
+          </div>
+          <div class="art-card-body">
+            <div class="art-card-title">${art.title}</div>
+            <div class="art-card-meta">
+              <span><i class="ph-bold ph-frame-corners"></i> ${art.dimensions}</span>
+              <span><i class="ph-bold ph-palette"></i> ${art.medium}</span>
+              <span><i class="ph-bold ph-calendar-blank"></i> ${art.year}</span>
+            </div>
+            <div class="art-card-price">${art.price}</div>
+            <div class="art-card-actions">
+              <button class="btn btn-outline btn-sm toggle-featured-btn" data-id="${art.id}" data-featured="${art.isFeatured}">
+                <i class="ph-bold ${art.isFeatured ? 'ph-star-fill' : 'ph-star'}"></i>
+                ${art.isFeatured ? 'Unfeature' : 'Feature'}
+              </button>
+              <button class="btn btn-danger btn-sm delete-art-btn" data-id="${art.id}" data-title="${art.title}">
+                <i class="ph-bold ph-trash"></i> Delete
+              </button>
+            </div>
+          </div>
+        `;
+        artworksGrid.appendChild(card);
+      });
+
+      // Bind Action Buttons
+      document.querySelectorAll(".toggle-featured-btn").forEach((btn) => {
+        btn.addEventListener("click", async (e) => {
+          const id = e.currentTarget.dataset.id;
+          const currentStatus = e.currentTarget.dataset.featured === "true";
+          try {
+            await updateDoc(doc(db, "artworks", id), {
+              isFeatured: !currentStatus
+            });
+            showToast(!currentStatus ? "Marked as Homepage Feature" : "Removed from Homepage Feature");
+            loadArtworks();
+          } catch (err) {
+            showToast("Failed to update feature status", "error");
+          }
+        });
+      });
+
+      document.querySelectorAll(".delete-art-btn").forEach((btn) => {
+        btn.addEventListener("click", async (e) => {
+          const id = e.currentTarget.dataset.id;
+          const title = e.currentTarget.dataset.title;
+          if (confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) {
+            try {
+              await deleteDoc(doc(db, "artworks", id));
+              showToast(`"${title}" deleted from portfolio.`);
+              loadArtworks();
+            } catch (err) {
+              showToast("Failed to delete artwork", "error");
+            }
+          }
+        });
+      });
+    }
+
+    // Update Dashboard Stats
+    function updateStats() {
+      statTotal.innerText = currentArtworks.length;
+      statFeatured.innerText = currentArtworks.filter(a => a.isFeatured).length;
+      statCanvas.innerText = currentArtworks.filter(a => a.category === "Canvas Painting").length;
+      statOther.innerText = currentArtworks.filter(a => a.category !== "Canvas Painting").length;
+    }
+
+    // Category Filter Buttons
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeFilter = btn.dataset.filter;
+        renderArtworks();
+      });
+    });
+
+  </script>
+</body>
+</html>

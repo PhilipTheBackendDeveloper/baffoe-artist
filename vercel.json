@@ -1,6 +1,8 @@
 {
   "cleanUrls": true,
   "rewrites": [
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/cms", "destination": "/admin.html" },
     { "source": "/multipage", "destination": "/index-studio-multipage.html" },
     { "source": "/singlepage", "destination": "/index-studio-onepage.html" },
     { "source": "/studio", "destination": "/index-studio-multipage.html" },
