@@ -2501,3 +2501,12 @@ function mxdTitleShift() {
 // --------------------------------------------- //
 // Hero - Title Shift End
 // --------------------------------------------- //
+
+// --------------------------------------------- //
+// PWA Service Worker (Silent Background Registration)
+// --------------------------------------------- //
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+}

@@ -1,14 +1,14 @@
 {
-  "name": "Baffoe Kwabena Studio CMS",
-  "short_name": "Baffoe Studio",
-  "description": "Curatorial Artwork Management & Portfolio CMS for Baffoe Kwabena",
-  "start_url": "/admin.html",
+  "name": "Baffoe Kwabena — Visual Artist & 3D Designer",
+  "short_name": "Baffoe Kwabena",
+  "description": "Official fine art portfolio of Baffoe Kwabena — multidisciplinary Ghanaian contemporary visual artist and 3D designer based in Accra, Ghana.",
+  "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#121212",
   "theme_color": "#121212",
-  "categories": ["lifestyle", "business", "design", "utilities"],
+  "categories": ["lifestyle", "design", "art"],
   "icons": [
     {
       "src": "/img/favicon/pwa-192.png",

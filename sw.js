@@ -1,14 +1,24 @@
 /**
- * Service Worker for Baffoe Kwabena Studio CMS PWA
- * Version: 1.0.0
+ * Service Worker for Baffoe Kwabena Portfolio & Studio CMS PWA
+ * Version: 1.1.0
  */
 
-const CACHE_NAME = "baffoe-studio-v1";
+const CACHE_NAME = "baffoe-art-v2";
 
 const PRECACHE_ASSETS = [
+  "/",
+  "/index.html",
+  "/index-studio-multipage.html",
+  "/index-studio-onepage.html",
+  "/works.html",
   "/admin.html",
   "/manifest.json",
+  "/admin-manifest.json",
   "/css/plugins.css",
+  "/css/main.css",
+  "/css/loader.css",
+  "/js/libs.min.js",
+  "/js/app.js",
   "/img/favicon/favicon.ico",
   "/img/favicon/pwa-192.png",
   "/img/favicon/pwa-512.png",
@@ -23,7 +33,7 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(PRECACHE_ASSETS).catch((err) => {
-        console.warn("[PWA SW] Precache partial error (ignored):", err);
+        console.warn("[PWA SW] Precache partial note:", err);
       });
     }).then(() => self.skipWaiting())
   );
@@ -44,7 +54,7 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// Fetch: Network-first for HTML and Firebase API, Cache-first for static assets
+// Fetch: Network-first for HTML navigation, Cache-first / Stale-while-revalidate for assets
 self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
 
@@ -71,7 +81,11 @@ self.addEventListener("fetch", (event) => {
         })
         .catch(() => {
           return caches.match(event.request).then((cached) => {
-            return cached || caches.match("/admin.html");
+            if (cached) return cached;
+            if (url.pathname.includes("admin")) {
+              return caches.match("/admin.html");
+            }
+            return caches.match("/") || caches.match("/index.html");
           });
         })
     );
