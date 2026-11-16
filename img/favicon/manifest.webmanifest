@@ -1,11 +1,32 @@
 {
-  "name": "FlyStudio - Creative Studio & Personal Portfolio HTML Template",
-  "short_name": "FlyStudio",
+  "name": "Baffoe Kwabena Studio CMS",
+  "short_name": "Baffoe Studio",
+  "description": "Curatorial Artwork Management & Portfolio CMS for Baffoe Kwabena",
+  "start_url": "/admin.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#121212",
+  "theme_color": "#121212",
+  "categories": ["lifestyle", "business", "design", "utilities"],
   "icons": [
-    { "src": "/img/favicon/android-icon-192.png", "type": "image/png", "sizes": "192x192" },
-    { "src": "/img/favicon/android-icon-512.png", "type": "image/png", "sizes": "512x512" }
-  ],
-  "theme_color": "#efefef",
-  "background_color": "#efefef",
-  "display": "standalone"
+    {
+      "src": "/img/favicon/pwa-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/favicon/pwa-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/img/favicon/pwa-maskable-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ]
 }
